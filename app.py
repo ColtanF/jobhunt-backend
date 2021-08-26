@@ -2,6 +2,7 @@ import time
 from flask import Flask,jsonify, request
 from flask_mysqldb import MySQL
 from flask_cors import CORS
+from passlib.hash import sha256_crypt
 
 import json
 
@@ -24,6 +25,54 @@ def home():
 @app.route('/time')
 def get_current_time():
     return {'time': time.time()}
+
+@app.route('/register', methods=["POST"])
+def register():
+
+    # get the user fields
+    newUser = json.loads(request.data)
+    name = newUser['name']
+    email = newUser['email']
+    username = newUser['username']
+    password = sha256_crypt.encrypt(newUser['password'])
+    
+    # check if the username already exists
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM users WHERE username = %s", [newUser['username']])
+    mysql.connection.commit()
+    data = cur.fetchall()
+    if len(data) != 0: 
+        response = jsonify(error= 'User account for ' + newUser['username'] + ' already exists!')
+        return response
+    # add the user to the users table
+    cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)", (name, email, username, password))
+    mysql.connection.commit()
+    cur.close()
+    response = jsonify(response=200,user="registered")
+    return response
+
+@app.route('/login', methods=["POST"])
+def login():
+    # grab the login info
+    userInfo = json.loads(request.data)
+    username = userInfo["username"]
+    password_candidate = userInfo["password"]
+    
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM users WHERE username=%s", [username])
+    if result > 0:
+        data = cur.fetchone()
+        password = data['password']
+        cur.close()
+        # compare the stored password with the login attempt's password
+        if sha256_crypt.verify(password_candidate, password):
+            response = jsonify(response=200, logged_in=True)
+        else:
+            response = jsonify(error="Invalid password. Please try again.")
+        return response
+    else:
+        response = jsonify(error="Invalid username. Please try again.")
+        return response
 
 @app.route('/jobs')
 def getJobs():
