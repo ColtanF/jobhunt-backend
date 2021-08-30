@@ -61,7 +61,6 @@ def checkAndMakeDB():
     )
     db_cursor = db_connection.cursor()
 
-    print("db value = " + db)
     db_cursor.execute("SHOW DATABASES;")
     databases = [item[0] for item in db_cursor.fetchall()]
 

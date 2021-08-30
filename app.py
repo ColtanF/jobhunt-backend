@@ -88,8 +88,6 @@ def login():
 
 @app.route('/jobs')
 def getJobs():
-    print(os.environ)
-    print(app.config)
     cur = mysql.connection.cursor()
 
     # grab all of the jobs
