@@ -15,7 +15,9 @@ urllib.parse.uses_netloc.append('mysql')
 
 def get_mysql_environs():
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+    print('here')
     if 'DATABASE_URL' in os.environ:
+        print('here2')
         url = urllib.parse.urlparse(os.environ['DATABASE_URL'])
         app.config['MYSQL_HOST'] = url.hostname
         app.config['MYSQL_USER'] = url.username
