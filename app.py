@@ -4,20 +4,22 @@ from flask_mysqldb import MySQL
 from flask_cors import CORS
 from passlib.hash import sha256_crypt
 import os
+import urllib.parse
 import json
 
 app = Flask(__name__)
 app.debug = True
 CORS(app)
-
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'qwerQWER1234!@#$'
-# app.config['MYSQL_DB'] = 'job_tracker_db'
-# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+urllib.parse.uses_netloc.append('mysql')
 
 def get_mysql_environs():
-    print(os.environ['DATABASE_URL'])
+    app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+    if 'DATABASE_URL' in os.environ:
+        url = urllib.parse.urlparse(os.environ['DATABASE_URL'])
+        app.config['MYSQL_HOST'] = url.hostname
+        app.config['MYSQL_USER'] = url.username
+        app.config['MYSQL_PASSWORD'] = url.password
+        app.config['MYSQL_DB'] = url.path[1:]
 
 mysql = MySQL(app)
 
