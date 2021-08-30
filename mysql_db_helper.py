@@ -39,7 +39,7 @@ tables['jobs_tbl'] = (
 def checkAndMakeDB():
     db = ""
     hostname = ""
-    user = ""
+    username = ""
     password = ""
 
     if 'DATABASE_URL' in os.environ:
