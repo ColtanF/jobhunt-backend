@@ -133,7 +133,7 @@ def addJob():
      # Add the job to the DB
     cur = mysql.connection.cursor()
 
-    cur.execute("INSERT INTO jobs_tbl(company, position, companyInfo, positionInfo, reqsIMeet, reqsIDontMeet, salary, address, links, status, statusNotes, username, rating, rejected) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 0, false)",
+    cur.execute("INSERT INTO jobs_tbl(company, position, companyInfo, positionInfo, reqsIMeet, reqsIDontMeet, salary, address, links, status, statusNotes, username, rating) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 0)",
                 (company, position, companyInfo, positionInfo, reqsIMeet, reqsIDontMeet, salary, address, links, status, statusNotes, username))
 
     mysql.connection.commit()
