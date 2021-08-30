@@ -26,6 +26,8 @@ def get_mysql_environs():
         app.config['MYSQL_PASSWORD'] = url.password
         app.config['MYSQL_DB'] = url.path[1:]
 
+get_mysql_environs()
+mysql_db_helper.checkAndMakeDB()
 mysql = MySQL(app)
 
 @app.route('/')
@@ -86,6 +88,7 @@ def login():
 
 @app.route('/jobs')
 def getJobs():
+    print(os.environ)
     print(app.config)
     cur = mysql.connection.cursor()
 
@@ -193,6 +196,6 @@ def updateRating(id):
 
 if __name__ == "__main__":
     app.secret_key = "123abc"
-    get_mysql_environs()
-    mysql_db_helper.checkAndMakeDB()
+    # get_mysql_environs()
+    # mysql_db_helper.checkAndMakeDB()
     app.run(port=5000)
