@@ -6,6 +6,7 @@ from passlib.hash import sha256_crypt
 import os
 import urllib.parse
 import json
+import mysql_db_helper
 
 app = Flask(__name__)
 app.debug = True
@@ -188,4 +189,5 @@ def updateRating(id):
 if __name__ == "__main__":
     app.secret_key = "123abc"
     get_mysql_environs()
+    mysql_db_helper.checkAndMakeDB()
     app.run(port=5000)
