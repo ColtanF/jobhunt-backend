@@ -32,7 +32,9 @@ tables['jobs_tbl'] = (
     "  address VARCHAR(200)," +
     "  links TEXT," +
     "  status VARCHAR(200)," +
+    "  statusNotes TEXT," +
     "  rating INT," +  
+    "  username VARCHAR(30)," +
     "  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
 )
 
