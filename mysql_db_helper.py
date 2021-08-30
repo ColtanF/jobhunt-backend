@@ -42,8 +42,12 @@ def checkAndMakeDB():
     username = ""
     password = ""
 
-    if 'DATABASE_URL' in os.environ:
-        url = urllib.parse.urlparse(os.environ['DATABASE_URL'])
+    if 'CLEARDB_DATABASE_URL' in os.environ or "DATABASE_URL" in os.environ:        
+        url={}
+        if 'CLEARDB_DATABASE_URL' in os.environ:
+            url = urllib.parse.urlparse(os.environ['CLEARDB_DATABASE_URL'])
+        else:
+            url = urllib.parse.urlparse(os.environ['DATABASE_URL'])
         db = url.path[1:]
         dbs[db] = ("CREATE DATABASE " + db + ";")
         hostname = url.hostname
