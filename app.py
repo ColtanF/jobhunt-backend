@@ -3,18 +3,21 @@ from flask import Flask,jsonify, request
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 from passlib.hash import sha256_crypt
-
+import os
 import json
 
 app = Flask(__name__)
 app.debug = True
 CORS(app)
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'qwerQWER1234!@#$'
-app.config['MYSQL_DB'] = 'job_tracker_db'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+# app.config['MYSQL_HOST'] = 'localhost'
+# app.config['MYSQL_USER'] = 'root'
+# app.config['MYSQL_PASSWORD'] = 'qwerQWER1234!@#$'
+# app.config['MYSQL_DB'] = 'job_tracker_db'
+# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
+def get_mysql_environs():
+    print(os.environ['DATABASE_URL'])
 
 mysql = MySQL(app)
 
@@ -182,4 +185,5 @@ def updateRating(id):
 
 if __name__ == "__main__":
     app.secret_key = "123abc"
+    get_mysql_environs()
     app.run(port=5000)
