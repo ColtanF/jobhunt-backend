@@ -81,9 +81,11 @@ def login():
             response = jsonify(response=200, logged_in=True)
         else:
             response = jsonify(error="Invalid password. Please try again.")
+        response.headers.add('Access-Control-Allow-Origin', '*')
         return response
     else:
         response = jsonify(error="Invalid username. Please try again.")
+        response.headers.add('Access-Control-Allow-Origin', '*')
         return response
 
 @app.route('/jobs')
