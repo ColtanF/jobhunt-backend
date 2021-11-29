@@ -10,7 +10,7 @@ import mysql_db_helper
 
 app = Flask(__name__)
 app.debug = True
-CORS(app)
+cors = CORS(app)
 urllib.parse.uses_netloc.append('mysql')
 
 def get_mysql_environs():
@@ -88,12 +88,12 @@ def login():
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
 
-@app.route('/jobs')
-def getJobs():
+@app.route('/jobs/<string:username>')
+def getJobs(username):
     cur = mysql.connection.cursor()
 
     # grab all of the jobs
-    result = cur.execute("SELECT * FROM jobs_tbl")
+    result = cur.execute("SELECT * FROM jobs_tbl WHERE username=%s", [username])
 
     jobs = cur.fetchall()
     cur.close()
